@@ -1,0 +1,64 @@
+﻿@model HotelReservationsManager.Models.Clients.ClientsIndexViewModel
+@{
+    ViewData["Title"] = "Clients";
+}
+
+<h1>Reservations</h1>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-primary ">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Phone Number
+            </th>
+            <th>
+                E-mail
+            </th>
+            <th>
+                End
+            </th>
+            <th>
+                Adult
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var client in Model.Clients)
+        {
+        <tr>
+            <td>
+                @{ var name = client.FirstName + " " + client.LastName;}
+                @Html.DisplayFor(modelItem => name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => client.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => client.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => client.Adult)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@client.Id">Edit</a>
+                <a asp-action="Delete" asp-route-id="@client.Id">Delete</a>
+            </td>
+        </tr>
+        }
+
+    </tbody>
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.Pager.PagesCount; i++)
+        {
+<li class="page-item @(i == Model.Pager.CurrentPage ? "active" : "")">
+    <a asp-route-Pager.CurrentPage="@i" class="page-link">@i</a>
+</li>}
+    </ul>
+</table>
+

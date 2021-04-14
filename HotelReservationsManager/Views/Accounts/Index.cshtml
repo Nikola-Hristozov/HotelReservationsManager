@@ -1,0 +1,87 @@
+﻿@model HotelReservationsManager.Models.Accounts.AccountsIndexViewModel
+@{
+    ViewData["Title"] = "Accounts";
+}
+
+<h1>Reservations</h1>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-primary ">
+    <thead>
+        <tr>
+            <th>
+                Username
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Personal Identification Number
+            </th>
+            <th>
+                Phone Number
+            </th>
+            <th>
+                E-mail
+            </th>
+            <th>
+                Start
+            </th>
+            <th>
+                Is Active
+            </th>
+            <th>
+                Released
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var account in Model.Accounts)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => account.Username)
+            </td>
+            <td>
+                @{ var name = account.FirstName + " " + account.LastName;}
+                @Html.DisplayFor(modelItem => name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => account.PersonalId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => account.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => account.Email)
+            </td>
+            <td>
+                @{ var start = account.Start.ToShortDateString();}
+                @Html.DisplayFor(modelItem => start)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => account.Active)
+            </td>
+            <td>
+                @{ var release = account.Released.ToShortDateString();}
+                @Html.DisplayFor(modelItem => release)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@account.Id">Edit</a>
+                <a asp-action="Delete" asp-route-id="@account.Id">Delete</a>
+            </td>
+        </tr>
+        }
+
+    </tbody>
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.Pager.PagesCount; i++)
+        {
+<li class="page-item @(i == Model.Pager.CurrentPage ? "active" : "")">
+    <a asp-route-Pager.CurrentPage="@i" class="page-link">@i</a>
+</li>}
+    </ul>
+</table>
+

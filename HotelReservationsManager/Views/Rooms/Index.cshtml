@@ -1,0 +1,75 @@
+﻿@model HotelReservationsManager.Models.Rooms.RoomsIndexViewModel
+@{
+    ViewData["Title"] = "Rooms";
+}
+
+<h1>Reservations</h1>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-primary ">
+    <thead>
+        <tr>
+            <th>
+                Number
+            </th>
+            <th>
+                Capacity
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Available
+            </th>
+            <th>
+                Adult Price for bed
+            </th>
+            <th>
+                Child Price for bed
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var room in Model.Rooms)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => room.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => room.Capacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => room.RoomType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => room.Available)
+            </td>
+            <td>
+                @{var adult = room.AdultBed + "лв";}
+                @Html.DisplayFor(modelItem => adult)
+            </td>
+            <td>
+                @{var child = room.ChildBed + "лв";}
+                @Html.DisplayFor(modelItem => child)
+            </td>
+
+            <td>
+                <a asp-action="Edit" asp-route-id="@room.Id">Edit</a>
+                <a asp-action="Delete" asp-route-id="@room.Id">Delete</a>
+            </td>
+        </tr>
+        }
+
+    </tbody>
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.Pager.PagesCount; i++)
+        {
+<li class="page-item @(i == Model.Pager.CurrentPage ? "active" : "")">
+    <a asp-route-Pager.CurrentPage="@i" class="page-link">@i</a>
+</li>}
+    </ul>
+</table>
+

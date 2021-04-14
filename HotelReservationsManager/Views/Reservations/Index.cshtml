@@ -1,0 +1,94 @@
+﻿@model HotelReservationsManager.Models.Reservations.ReservationsIndexViewModel
+@{
+    ViewData["Title"] = "Reservations";
+}
+
+<h1>Reservations</h1>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table table-primary ">
+    <thead>
+        <tr>
+            <th>
+                Room
+            </th>
+            <th>
+                Account
+            </th>
+            <th>
+                Clients
+            </th>
+            <th>
+                Start
+            </th>
+            <th>
+                End
+            </th>
+            <th>
+                Breakfast
+            </th>
+            <th>
+                All Inclusive
+            </th>
+            <th>
+                Cost
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reservation in Model.Reservations)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => reservation.Room.Number)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => reservation.Account.Username)
+            </td>
+            <td>
+                
+                @foreach (var client in reservation.Clients)
+                {
+                    var name = client.FirstName + " " + client.LastName;
+                <p>
+                    @Html.DisplayFor(modelItem => name)
+                </p>
+                }
+               
+            </td>
+            <td>
+                @{ var start = reservation.Start.ToShortDateString();}
+                @Html.DisplayFor(modelItem => start)
+            </td>
+            <td>
+                @{ var end = reservation.End.ToShortDateString();}
+                @Html.DisplayFor(modelItem => end)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => reservation.Breakfast)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => reservation.AllInclusive)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => reservation.Cost)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@reservation.Id">Edit</a>
+                <a asp-action="Delete" asp-route-id="@reservation.Id">Delete</a>
+            </td>
+        </tr>
+        }
+
+    </tbody>
+    <ul class="pagination">
+        @for (var i = 1; i <= Model.Pager.PagesCount; i++)
+        {
+<li class="page-item @(i == Model.Pager.CurrentPage ? "active" : "")">
+    <a asp-route-Pager.CurrentPage="@i" class="page-link">@i</a>
+</li>}
+    </ul>
+</table>
+
