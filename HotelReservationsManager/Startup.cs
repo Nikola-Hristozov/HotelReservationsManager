@@ -25,8 +25,7 @@ namespace HotelReservationsManager
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();//*o=>o.Filters.Add(new AuthorizeFilter()));*//
-            //services.AddRazorPages().AddMvcOptions(o => o.Filters.Add(new AuthorizeFilter()));
+            services.AddControllersWithViews(o=>o.Filters.Add(new AuthorizeFilter()));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
         }
 

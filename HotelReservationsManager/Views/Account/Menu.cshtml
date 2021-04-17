@@ -1,0 +1,37 @@
+﻿@model HotelReservationsManager.Models.LoginViewModel
+@using Microsoft.AspNetCore.Authorization
+@inject IAuthorizationService AuthorizationService
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h1>Login</h1>
+
+<div>
+    @{
+        if (User.Identity.IsAuthenticated)
+        {
+            <div class="btn-group-vertical">
+                <div>
+                    <a class="btn btn-primary btn-outline-secondary" asp-action="Reservations">Reservations</a>
+                </div>
+                <div>
+                    <a class="btn btn-primary btn-outline-secondary" asp-action="Clients">Clients</a>
+                </div>
+                @{
+                    if (User.IsInRole("Administrator"))
+                    {
+                        <div>
+                            <a class="btn btn-primary btn-outline-secondary" asp-action="Rooms">Rooms</a>
+                        </div>
+                        <div>
+                            <a class="btn btn-primary btn-outline-secondary" asp-action="Accounts">Accounts</a>
+                        </div>
+                    }
+                }
+            </div>
+        }
+     }
+</div>
+        
+

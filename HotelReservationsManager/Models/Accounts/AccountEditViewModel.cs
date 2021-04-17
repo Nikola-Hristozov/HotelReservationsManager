@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Data.Entity;
+using System;
 using System.Collections.Generic;
-using System.Text;
-namespace Data.Entity
+using System.ComponentModel.DataAnnotations;
 
+namespace HotelReservationsManager.Models.Accounts
 {
-    public class Account
+    public class AccountsEditViewModel
     {
-
         public int Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
@@ -19,6 +19,5 @@ namespace Data.Entity
         public bool Active { get; set; }
         public Nullable<DateTime> Released { get; set; }
         public Roles Role { get; set; }
-
     }
 }

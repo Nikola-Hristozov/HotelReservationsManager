@@ -18,7 +18,7 @@ namespace HotelReservationsManager.Models.Accounts
         public string Email { get; set; }
         public DateTime Start { get; set; }
         public bool Active { get; set; }
-        public DateTime Released { get; set; }
+        public Nullable<DateTime> Released { get; set; }
 
     }
 }

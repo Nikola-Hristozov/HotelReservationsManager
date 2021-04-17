@@ -3,7 +3,7 @@
     ViewData["Title"] = "Clients";
 }
 
-<h1>Reservations</h1>
+<h1>Clients</h1>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -20,10 +20,10 @@
                 E-mail
             </th>
             <th>
-                End
+                Adult
             </th>
             <th>
-                Adult
+                Previous Reservations
             </th>
             <th></th>
         </tr>
@@ -44,6 +44,15 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => client.Adult)
+            </td>
+            <td>
+                @foreach (var previousReservation in client.previousReservations)
+                {
+                    var reservation = previousReservation.ReservationId;
+                    <p>
+                        @Html.DisplayFor(modelItem => reservation)
+                    </p>
+                }
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@client.Id">Edit</a>

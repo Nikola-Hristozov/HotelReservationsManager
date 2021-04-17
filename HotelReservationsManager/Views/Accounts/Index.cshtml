@@ -65,7 +65,13 @@
                 @Html.DisplayFor(modelItem => account.Active)
             </td>
             <td>
-                @{ var release = account.Released.ToShortDateString();}
+                @{
+                    var release = new DateTime();
+                    if (account.Released.HasValue)
+                    {
+                        release = account.Released.Value;
+                    }
+                }
                 @Html.DisplayFor(modelItem => release)
             </td>
             <td>

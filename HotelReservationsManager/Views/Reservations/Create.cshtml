@@ -1,0 +1,64 @@
+﻿@model HotelReservationsManager.Models.Reservations.ReservationsCreateViewModel
+@{ ViewData["Title"] = "Create"; }
+<h1>Create</h1>
+
+<h4>Client</h4>
+<hr />
+<div class="row">
+    <div>
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Room" class="control-label"></label>
+                <select asp-for="Room" class="form-control"
+                        asp-items="Model.RoomsList"></select>
+                <span asp-validation-for="Room" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Account" class="control-label"></label>
+                <select asp-for="Account" class="form-control"
+                        asp-items="Model.AccountsList"></select>
+                <span asp-validation-for="Account" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Clients" class="control-label"></label>
+                <select asp-for="Clients" class="form-control"
+                        asp-items="Model.ClientsList"></select>
+                <span asp-validation-for="Clients" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Start" class="control-label"></label>
+                <input asp-for="Start" class="form-control" />
+                <span asp-validation-for="Start" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="End" class="control-label"></label>
+                <input asp-for="End" class="form-control" />
+                <span asp-validation-for="End" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Breakfast" class="control-label"></label>
+                <input asp-for="Breakfast" class="form-control" />
+                <span asp-validation-for="Breakfast" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AllInclusive" class="control-label"></label>
+                <input asp-for="AllInclusive" class="form-control" />
+                <span asp-validation-for="AllInclusive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cost" class="control-label"></label>
+                <input asp-for="Cost" class="form-control" />
+                <span asp-validation-for="Cost" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+

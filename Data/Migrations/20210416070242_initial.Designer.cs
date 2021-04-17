@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AccountDb))]
-    [Migration("20210410164917_INITIAL")]
-    partial class INITIAL
+    [Migration("20210416070242_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -40,9 +40,6 @@ namespace Data.Migrations
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("MyProperty")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
@@ -53,6 +50,9 @@ namespace Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Released")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
@@ -85,14 +85,24 @@ namespace Data.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ReservationId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("ReservationId");
-
                     b.ToTable("Clients");
+                });
+
+            modelBuilder.Entity("Data.Entity.ClientReservations", b =>
+                {
+                    b.Property<int>("ReservationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ClientId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ReservationId", "ClientId");
+
+                    b.HasIndex("ClientId");
+
+                    b.ToTable("ClientReservations");
                 });
 
             modelBuilder.Entity("Data.Entity.Reservation", b =>
@@ -162,11 +172,23 @@ namespace Data.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("Data.Entity.Client", b =>
+            modelBuilder.Entity("Data.Entity.ClientReservations", b =>
                 {
-                    b.HasOne("Data.Entity.Reservation", null)
+                    b.HasOne("Data.Entity.Client", "client")
+                        .WithMany("previousReservations")
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Data.Entity.Reservation", "reservation")
                         .WithMany("Clients")
-                        .HasForeignKey("ReservationId");
+                        .HasForeignKey("ReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("client");
+
+                    b.Navigation("reservation");
                 });
 
             modelBuilder.Entity("Data.Entity.Reservation", b =>
@@ -182,6 +204,11 @@ namespace Data.Migrations
                     b.Navigation("Account");
 
                     b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("Data.Entity.Client", b =>
+                {
+                    b.Navigation("previousReservations");
                 });
 
             modelBuilder.Entity("Data.Entity.Reservation", b =>
