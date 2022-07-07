@@ -10,9 +10,9 @@ namespace HotelReservationsManager.Models.Reservations
     public class ReservationsEditViewModel
     {
         public int Id { get; set; }
-        public string Room { get; set; }
-        public string Account { get; set; }
-        public List<string> Clients { get; set; }
+        public int Room { get; set; }
+        public int Account { get; set; }
+        public List<int> Clients { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public bool Breakfast { get; set; }

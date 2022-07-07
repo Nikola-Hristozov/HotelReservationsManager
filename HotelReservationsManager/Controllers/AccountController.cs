@@ -33,23 +33,28 @@ namespace HotelReservationsManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            LoginViewModel account = context.Accounts.Where(e => e.Username == model.Username).Select(c => new LoginViewModel { Password = c.Password, Username = c.Username,Active=c.Active,Role=c.Role,Id=c.Id }).First();
-            if (account.Password == model.Password && account.Active)
+            if (context.Accounts.Select(x => x.Username).Contains(model.Username))
             {
-                var claims = new List<Claim>
+                LoginViewModel account = context.Accounts.Where(e => e.Username == model.Username).Select(c => new LoginViewModel { Password = c.Password, Username = c.Username, Active = c.Active, Role = c.Role, Id = c.Id }).First();
+                if (account.Password == model.Password && account.Active)
+                {
+                    var claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier,account.Id.ToString()),
                     new Claim(ClaimTypes.Role,account.Role.ToString())
                 };
-                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var principal = new ClaimsPrincipal(identity);
-                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                return RedirectToAction(nameof(Menu));
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+                    return RedirectToAction(nameof(Menu));
+                }
             }
-            else
-            {
-                return View();
-            }
+            return RedirectToAction(nameof(FailedLogin));
+
+        }
+        public IActionResult FailedLogin()
+        {
+            return View();
         }
         public IActionResult Menu()
         {

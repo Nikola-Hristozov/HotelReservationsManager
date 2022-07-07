@@ -100,26 +100,79 @@ namespace HotelReservationsManager.Controllers
             }
         }
 
-        // GET: ReservationsController/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-            return View();
+            Reservation reservation = await context.Reservations.FindAsync(id);
+            if (reservation == null)
+            {
+                return NotFound();
+            }
+
+            ReservationsEditViewModel model = new ReservationsEditViewModel
+            {
+                Id = reservation.Id,
+                Room = reservation.Room.Id,
+                Clients = reservation.Clients.Where(e => e.ReservationId == reservation.Id).Select(e => e.Client.Id).ToList(),
+                Start = reservation.Start,
+                End = reservation.End,
+                Breakfast = reservation.Breakfast,
+                AllInclusive = reservation.AllInclusive,
+                Account = reservation.Account.Id,
+                Cost = reservation.Cost
+            };
+
+            return View(model);
         }
 
-        // POST: ReservationsController/Edit/5
+        // POST: Contacts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(ReservationsEditViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
+                Reservation reservation = new Reservation
+                {
+                    Room = context.Rooms.Find(model.Room),
+                    Clients = new List<ClientReservations>(),
+                    Start = model.Start,
+                    End = model.End,
+                    Breakfast = model.Breakfast,
+                    AllInclusive = model.AllInclusive,
+                    Account = context.Accounts.Find(model.Account),
+                    Cost = model.Cost
+                };
+                context.ClientReservations.RemoveRange(context.ClientReservations.Where(e => e.ReservationId == model.Id));
+                context.Reservations.Remove(context.Reservations.Find(model.Id));
+                await context.SaveChangesAsync();
+
+                List<ClientReservations> clients = new List<ClientReservations>();
+                foreach (int id in model.Clients)
+                {
+                    ClientReservations client = new ClientReservations
+                    {
+                        Client = context.Clients.Find(id),
+                        Reservation = reservation
+                    };
+                    clients.Add(client);
+                    context.Clients.Find(id).previousReservations.Add(client);
+                }
+                reservation.Clients = clients;
+                context.ClientReservations.AddRange(clients);
+                context.Reservations.Add(reservation);
+
+                await context.SaveChangesAsync(); 
+               
+
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+
+            return View(model);
         }
 
         // GET: ReservationsController/Delete/5

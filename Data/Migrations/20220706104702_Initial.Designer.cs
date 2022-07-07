@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(AccountDb))]
-    [Migration("20210416070242_initial")]
-    partial class initial
+    [Migration("20220706104702_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -49,8 +49,11 @@ namespace Data.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Released")
+                    b.Property<DateTime?>("Released")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime2");
@@ -174,21 +177,21 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Entity.ClientReservations", b =>
                 {
-                    b.HasOne("Data.Entity.Client", "client")
+                    b.HasOne("Data.Entity.Client", "Client")
                         .WithMany("previousReservations")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data.Entity.Reservation", "reservation")
+                    b.HasOne("Data.Entity.Reservation", "Reservation")
                         .WithMany("Clients")
                         .HasForeignKey("ReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("client");
+                    b.Navigation("Client");
 
-                    b.Navigation("reservation");
+                    b.Navigation("Reservation");
                 });
 
             modelBuilder.Entity("Data.Entity.Reservation", b =>

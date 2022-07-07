@@ -13,6 +13,7 @@ namespace HotelReservationsManager.Models.Accounts
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string PersonalId { get; set; }
+        [Phone]
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public DateTime Start { get; set; }

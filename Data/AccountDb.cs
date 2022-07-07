@@ -19,6 +19,7 @@ namespace Data
         {
             optionsBuilder.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=HotelReservationsDb;Integrated Security=True");
             optionsBuilder.UseLazyLoadingProxies();
+
         }
     }
 }
